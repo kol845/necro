@@ -1,7 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://animations/jump.tres" type="Animation" id=1]
-[ext_resource path="res://scripts/Shadow.gd" type="Script" id=2]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 
 [sub_resource type="StreamTexture" id=1]
 load_path = "res://.import/cyborg_animation_3.png-c59955f91ca6e0a630d5f19483522d25.stex"
@@ -40,6 +39,22 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=4]
+resource_name = "Jump"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 10, 11, 12, 13 ]
+}
+
+[sub_resource type="Animation" id=5]
 resource_name = "Run"
 length = 0.6
 loop = true
@@ -56,36 +71,33 @@ tracks/0/keys = {
 "values": [ 4, 5, 6, 7, 8, 9 ]
 }
 
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 13.3333, 17.0058 )
-
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 13.3333, 17.0058 )
 
-[node name="Shadow" type="KinematicBody2D"]
-position = Vector2( 200, -72 )
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 13.3333, 17.0058 )
+
+[node name="Player" type="KinematicBody2D"]
 scale = Vector2( 3, 3 )
+z_index = 1
 collision_layer = 2
-collision_mask = 7
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
+collision_mask = 6
+script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 0.156863, 0.156863, 0.156863, 1 )
+modulate = Color( 0.898039, 0.898039, 0.898039, 1 )
 light_mask = 1025
 position = Vector2( 3.33786e-06, 0 )
 texture = SubResource( 1 )
 hframes = 14
-frame = 13
+frame = 2
 region_rect = Rect2( -16, -17, 725, 86 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Falling = SubResource( 2 )
 anims/Idle = SubResource( 3 )
-anims/Jump = ExtResource( 1 )
-anims/Run = SubResource( 4 )
+anims/Jump = SubResource( 4 )
+anims/Run = SubResource( 5 )
 
 [node name="Detector" type="Area2D" parent="."]
 position = Vector2( -2.66667, 2.66667 )
@@ -93,9 +105,9 @@ position = Vector2( -2.66667, 2.66667 )
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Detector"]
 visible = false
 position = Vector2( 4.05312e-06, 5.33333 )
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( -2.66667, 8 )
-shape = SubResource( 6 )
+shape = SubResource( 7 )

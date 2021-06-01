@@ -10,20 +10,24 @@ var _first_tick = true
 var _history = []
 var _current_action = null
 var _current_action_count = 0
+var _timer : Timer = null
 
 
 func _do_timer():
 	_timer = Timer.new()
 	add_child(_timer)
-	add_child(_visibility)
 	_timer.connect("timeout", self, "_on_timer")
 	_timer.set_wait_time(1.0)
 	_timer.set_one_shot(false) # Make sure it loops
 	_timer.start()
-	
+
+
 func _ready():
 	_game_node = get_node("/root/World")
 	_visibility = VisibilityNotifier2D.new()
+	_is_dead = false
+	add_child(_visibility)
+	
 	_do_timer()
 
 func _physics_process(delta):
@@ -39,9 +43,9 @@ func _physics_process(delta):
 		do_jump()
 	if(Input.is_action_pressed("down")):
 		go_down()
-	if (!_visibility.is_on_screen()): # Fell out of screen
+	if (!_visibility.is_on_screen() and !_is_dead): # Fell out of screen
 		if(_first_tick):
-			_first_tick = false
+			_first_tick = false # Bug fix
 		else:
 			_die()
 	if(is_jumping and _jump_accel>0):
@@ -71,12 +75,12 @@ func _update_history():
 		_new_action(found_action)
 	
 func _die():
+	_is_dead = true # Is set to false in Entity
 	_save_action() # Save last action before death
 	_game_node.player_died(_history)
 	_history=[]
 	_current_action = null
 	_current_action_count = 0
-	respawn()
 
 func _new_action(new_action):
 	if(_current_action == null):
@@ -92,10 +96,10 @@ func _save_action():
 func print_locals():
 	pass
 
+
 func _on_timer():
 		
-	for collision in $Detector.get_overlapping_areas():
-		print(collision.get_parent().name)
-		
+#	print(get_node("/root/World/MainCamera").get_camera_screen_center())
+#	print(get_viewport_rect())
 	pass
 

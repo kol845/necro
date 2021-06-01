@@ -17,7 +17,6 @@ func _ready():
 
 func init(history):
 	_history = history
-
 	_current_action = _history[_history_i]
 
 func _physics_process(delta):
