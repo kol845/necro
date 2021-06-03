@@ -14,8 +14,11 @@ const ACCEL = 60
 
 var motion : Vector2 = Vector2()
 var facing_right = true
-var is_jumping = false
+
 var grounded : bool = false
+
+var is_jumping = false
+var is_attacking = false
 
 var _visibility = null
 
@@ -50,18 +53,18 @@ func go_left():
 	if(facing_right):
 		self.scale.x *= -1
 	facing_right = false
-	if (is_on_floor() and !is_jumping):
+	if (is_on_floor() and !is_jumping and !is_attacking):
 		$AnimationPlayer.play("Run")
 func go_right():
 	motion.x += ACCEL
 	if(!facing_right):
 		self.scale.x *= -1
 	facing_right = true
-	if (is_on_floor() and !is_jumping):
+	if (is_on_floor() and !is_jumping and !is_attacking):
 		$AnimationPlayer.play("Run")
 func do_idle():
 	motion.x= lerp(motion.x, 0, 0.2) # Ensures that motion stops gradulaly
-	if (is_on_floor() and !is_jumping):
+	if (is_on_floor() and !is_jumping and !is_attacking):
 		$AnimationPlayer.play("Idle")
 func do_jump():
 	if(is_on_floor()):
@@ -74,7 +77,18 @@ func go_down():
 	if(is_jumping):
 		_jump_accel-=JUMPACCELFADE*4
 		motion.y -= _jump_accel
-		
+func do_attack():
+	if(!is_attacking):
+		is_attacking = true
+		if($AnimationPlayer.get_current_animation() == "Idle"):
+			$AnimationPlayer.play("StandingAttack")
+		else:
+			$AnimationPlayer.play("RunningAttack")
+		yield(get_node("AnimationPlayer"), "animation_finished")
+		is_attacking = false
+
+	
+	
 # Gets called 60 times/sec
 func _physics_process(delta):
 	motion.y += GRAVITY
@@ -94,3 +108,5 @@ func _physics_process(delta):
 	if motion.y > MAXFALLSPEED:
 		motion.y = MAXFALLSPEED
 
+func test():
+	print("Test function reached!")

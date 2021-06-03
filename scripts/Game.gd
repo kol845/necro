@@ -6,6 +6,7 @@ const RESPAWNTIME = 0.2
 
 var _shadows = []
 
+var _level = 1
 
 var _spawn_timer : Timer = null
 var spawn_index : int = 0
@@ -15,7 +16,12 @@ var _player_scene = load("res://scenes/Player.tscn")
 
 var _player = null
 
+func empty_entities():
+	for child in $EntityContainer.get_children():
+		$EntityContainer.remove_child(child)
+
 func player_died(player_history):
+	empty_entities()
 	var new_shadow = _shadow_scene.instance()
 	_shadows.append(new_shadow)
 	new_shadow.init(player_history)
@@ -47,18 +53,15 @@ func _stop_timer():
 	spawn_index = 0
 
 func _next_spawn():
-	if(spawn_index<_shadows.size()-1):
-		_shadows[spawn_index].do_respawn()
-	elif(spawn_index==_shadows.size()-1): # Last added shadow node needs to be added
+	print(_shadows.size())
+	if(spawn_index<_shadows.size()):
 		$EntityContainer.add_child(_shadows[spawn_index])
 		_shadows[spawn_index].do_respawn()
 	if(spawn_index==_shadows.size()): # Time to spawn player(last spawn)
+		print("FUCKS")
+		$EntityContainer.add_child(_player)
 		_player.respawn()
 	spawn_index+=1
 	if(spawn_index>_shadows.size()):
 		_stop_timer()
 	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

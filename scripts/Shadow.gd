@@ -36,6 +36,7 @@ func _do_action():
 		_history_i+=1
 		if(_history_i >= _history.size()):
 			_is_depleated = true
+			do_idle()
 		else:
 			_current_action = _history[_history_i]
 			_current_action_count = _current_action.count
@@ -51,6 +52,8 @@ func _do_action():
 					do_jump()
 				"down":
 					go_down()
+				"attack":
+					do_attack()
 				"idle":
 					do_idle()
 		_current_action_count -= 1

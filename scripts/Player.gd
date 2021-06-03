@@ -43,6 +43,8 @@ func _physics_process(delta):
 		do_jump()
 	if(Input.is_action_pressed("down")):
 		go_down()
+	if(Input.is_action_pressed("attack")):
+		do_attack()
 	if (!_visibility.is_on_screen() and !_is_dead): # Fell out of screen
 		if(_first_tick):
 			_first_tick = false # Bug fix
@@ -66,8 +68,12 @@ func _update_history():
 		found_action.append("down")
 	if (Input.is_action_pressed("jump")):
 		found_action.append("jump")
+	if (Input.is_action_pressed("attack")):
+		found_action.append("attack")
 	if(found_action.empty()):
 		found_action.append("idle")
+
+
 	
 	if(_current_action == found_action):
 		_current_action_count+=1
@@ -98,7 +104,7 @@ func print_locals():
 
 
 func _on_timer():
-		
+
 #	print(get_node("/root/World/MainCamera").get_camera_screen_center())
 #	print(get_viewport_rect())
 	pass

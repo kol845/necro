@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://assets/right-arrow-png-transparent-background-11576954360v3ygoo4weh.png" type="Texture" id=1]
 [ext_resource path="res://tiles/tiles.tres" type="TileSet" id=2]
 [ext_resource path="res://scripts/Game.gd" type="Script" id=6]
 
@@ -23,3 +24,8 @@ zoom = Vector2( 2, 2 )
 __meta__ = {
 "_edit_group_": true
 }
+
+[node name="right-arrow-png-transparent-background-11576954360v3ygoo4weh" type="Sprite" parent="."]
+position = Vector2( 928, 192 )
+scale = Vector2( 0.182008, 0.182008 )
+texture = ExtResource( 1 )
